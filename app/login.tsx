@@ -1,16 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+	KeyboardAvoidingView,
+	Platform,
+	SafeAreaView,
+	ScrollView,
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
 } from 'react-native';
 
 const PRIMARY = '#137fec';
@@ -21,6 +21,7 @@ const TEXT_MUTED = '#94a3b8';
 
 export default function LoginScreen() {
 	const [passwordVisible, setPasswordVisible] = useState(false);
+	const router = useRouter();
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -35,7 +36,11 @@ export default function LoginScreen() {
 					showsVerticalScrollIndicator={false}
 				>
 					<View style={styles.headerRow}>
-						<TouchableOpacity style={styles.iconButton} activeOpacity={0.85}>
+						<TouchableOpacity
+							style={styles.iconButton}
+							activeOpacity={0.85}
+							onPress={() => router.back()}
+						>
 							<Ionicons name="arrow-back" size={22} color="white" />
 						</TouchableOpacity>
 						<Text style={styles.headerTitle}>UniConnect</Text>
@@ -96,7 +101,11 @@ export default function LoginScreen() {
 							<Text style={styles.forgotText}>Forgot Password?</Text>
 						</TouchableOpacity>
 
-						<TouchableOpacity style={styles.primaryButton} activeOpacity={0.9}>
+						<TouchableOpacity
+							style={styles.primaryButton}
+							activeOpacity={0.9}
+							onPress={() => router.replace('/(tabs)')}
+						>
 							<Text style={styles.primaryButtonText}>Log In</Text>
 						</TouchableOpacity>
 					</View>
@@ -118,14 +127,11 @@ export default function LoginScreen() {
 						</TouchableOpacity>
 					</View>
 
-					<View style={styles.footer}
-					>
+					<View style={styles.footer}>
 						<Text style={styles.footerText}>Don't have an account?</Text>
-						<Link href="/signup" asChild>
-							<TouchableOpacity activeOpacity={0.85}>
-								<Text style={styles.footerLink}>Sign Up</Text>
-							</TouchableOpacity>
-						</Link>
+						<TouchableOpacity activeOpacity={0.85} onPress={() => router.push('/signup')}>
+							<Text style={styles.footerLink}>Sign Up</Text>
+						</TouchableOpacity>
 					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>

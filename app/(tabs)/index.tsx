@@ -1,170 +1,253 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
-import React from 'react';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
 import {
   Image,
-  ImageBackground,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  useWindowDimensions,
 } from 'react-native';
 
 const PRIMARY = '#137fec';
 const BACKGROUND = '#101922';
 const SURFACE = '#1c242e';
-const BORDER = '#2e3642';
+const BORDER = '#2a3441';
 const TEXT_MUTED = '#94a3b8';
+const BADGE = '#e11d48';
 
-const AVATARS = [
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuBzyXb6HJ9G1dmuQGh7rMNgvFQv4w7UPRAjtMpOW_78kRHUlSp8BwYiiLpiNqmuBgBlDfUIYKJxhMAzKtz4aRkaekmkxXpLYtvqZJ1iPWnaSpSyybJBfeJkInA4Da-JwrnhSCWTQXl68infA0hpiRAs1KzXcipC66a_C9V5OuscrLQA-ZPM3Q2jwQSxM5P5jZieFCd0FwFpPmhS6IISK4ChCRel5wslL8FY9emujrvRaELSLqFlE9UASUw3YUcLx7i3T_oBV-F0A-E',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuDPvdksNiEhHcKL04Vfz76KcK4CZzOCdMImoT-jlDqHmfdkb34g3C2ILq43B23vNoCbfPusxVOa5JEJrJnUTkO99XnWo-mnbprfXfovgfBtxwy7pDkB3EuWCTYPXUqC5LBaBq9ozeCK555Oyfe2hC59bZ-2qEmhNSpO4GgTeR523-jLEyQswSYP2J9IujfufCLLwPbcnWQCF-Alv46TH4HeuDZHxRPLCmmr8bpvyK-Ko2aMOXLGmM2KdHI-gWxfxszaIMbcwCnXC4g',
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuBTKkKUgc2SA2e2a04538Dlr0wy-6nezDRUqEr9Q7EoUrKG7A95Gl79JkkVlnUYonszyGsIePtblnoojiur6p7VB9b_7O5p0C6B7k_GPrW4RGzI2j7kYxbDJjD7B71J88Jil2uGan6HmeXFbNupWzyis96yKDxgqrq_4DEi5Ssqwmc158vtJsSQC05eWgdN3Gw3X9NYsi_LK-5-8tOKC_gfOn55WoSelu18RkEQE5y0YG-KoraBhL0bKk2-VF62XooH8jChnvCZRYA',
+const QUICK_ACTIONS = [
+  { label: 'New Post', icon: 'pencil', emphasis: 'primary' },
+  { label: 'Create Group', icon: 'person-add-outline' },
+  { label: 'Upload File', icon: 'cloud-upload-outline' },
+  { label: 'Add Event', icon: 'calendar-outline' },
 ];
 
-const FEATURES = [
+const COURSES = [
+  { title: 'Calculus II', progress: 75, icon: 'calculator-outline', tint: '#f97316' },
+  { title: 'Software Engineering', progress: 45, icon: 'code-slash-outline', tint: '#3b82f6' },
+  { title: 'Intro to Economics', progress: 90, icon: 'trending-up-outline', tint: '#22c55e' },
+];
+
+const DISCUSSIONS = [
   {
-    title: 'Resource Sharing',
-    description:
-      'Access and share lecture notes, exam papers, and reference materials from any university across the country.',
-    icon: 'book-outline',
+    course: 'Intro to Economics',
+    title: 'Week 4 Homework help',
+    time: '1h ago',
+    replies: '3 New replies',
+    accent: '#22c55e',
   },
   {
-    title: 'Campus Forums',
-    description:
-      'Join discussions specific to your field of study. Connect with engineering, medicine, or law students nationwide.',
-    icon: 'chatbubbles-outline',
-  },
-  {
-    title: 'Event Calendar',
-    description: 'Never miss a beat. Stay informed about academic calendars, national deadlines, and campus events.',
-    icon: 'calendar-outline',
+    course: 'Software Engineering',
+    title: 'Project partners needed for Final',
+    time: '3h ago',
+    replies: '12 Replies',
+    accent: '#3b82f6',
   },
 ];
 
-export default function WelcomeScreen() {
-  const { width } = useWindowDimensions();
-  const featureWidth = width >= 900 ? '32%' : width >= 600 ? '48%' : '100%';
-
+export default function DashboardScreen() {
+  const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <View style={styles.logoRow}>
-            <View style={styles.logoIconBox}>
-              <Ionicons name="school" size={20} color="white" />
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <View style={styles.headerRow}>
+          <View style={styles.avatarRow}>
+            <Image
+              source={{
+                uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBlCD6MVMJ8lFDqmjf3drIEVo9g3_sNGiPcA2Mp1eIYFsblVRuY31XQaiLwUI6wpwOUB-hAydbUuTfRRPHEzM_k1XNEKvqNUWiRPYmLr-bfpsPi2LWoyI93_KFvHztKnqykeeZTrSbVipaMWj423RxZNPcPoRTlanvp02Cg296fuKYUM3JwGP5nqNQH6hOPFkkUWIoh0_F3-UeewWOxdaWeb0y-gI5yK7e2Iz5KBDRjFDIrfFKKxOKQgq_S_50MmsDQlQ2r8nCsYBw',
+              }}
+              style={styles.avatar}
+            />
+            <View>
+              <Text style={styles.greetingMuted}>Good Morning,</Text>
+              <Text style={styles.greetingName}>Abebe</Text>
             </View>
-            <Text style={styles.logoText}>UniConnect</Text>
           </View>
           <TouchableOpacity style={styles.iconButton} activeOpacity={0.85}>
-            <Ionicons name="globe-outline" size={22} color="white" />
+            <Ionicons name="notifications-outline" size={22} color="white" />
+            <View style={styles.badge} />
           </TouchableOpacity>
         </View>
 
-        <View style={styles.section}>
-          <View style={styles.heroImageWrapper}>
-            <ImageBackground
-              source={{
-                uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCvqe-E6tozfTEipvp8Xa2EutgT9PmALyktS3OVejOt0q6CyDJkwjd0uE2u_ynO4ZVYgiP-MLkUhjQbv9Vp15rsY9eTlDhrL9F_LHe25_TdXdpSZK5nPelMYRFqB9h7ynNnAj3-d8ypGdovYQ-vXobOe1KeNcGmKH-40fWh-Ul4BajDxH0gK9vA-h-RHl4OUv6pjoD6ymVGI80dNb2MvUzRG-Cfrl7U_TtrpUdXQ7sp4g-FkR4FoMV0xrxo1aLAAvY4hHWdXqiTNjk',
-              }}
-              style={styles.heroImage}
-              imageStyle={styles.heroImageRadius}
-            >
-              <View style={styles.heroOverlay} />
-              <View style={styles.heroBadge}>
-                <Text style={styles.heroBadgeText}>#1 Student Platform</Text>
-              </View>
-            </ImageBackground>
-          </View>
+        <View style={styles.searchBox}>
+          <Ionicons name="search-outline" size={18} color={TEXT_MUTED} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search courses, people, or papers..."
+            placeholderTextColor={TEXT_MUTED}
+          />
+        </View>
 
-          <View style={styles.heroTextBlock}>
-            <Text style={styles.heroTitle}>Uniting Students{'\n'}Across Ethiopia</Text>
-            <Text style={styles.heroSubtitle}>
-              The premier digital hub for sharing resources, connecting with peers, and staying updated on academic events
-              from Addis Ababa to Jimma.
-            </Text>
-          </View>
-
-          <View style={styles.socialProof}>
-            <View style={styles.avatarRow}>
-              {AVATARS.map((uri, index) => (
-                <Image
-                  key={uri}
-                  source={{ uri }}
-                  style={[styles.avatar, index !== 0 && styles.avatarOverlap]}
+        <View style={styles.quickRow}>
+          {QUICK_ACTIONS.map((action) => (
+            <TouchableOpacity key={action.label} style={styles.quickItem} activeOpacity={0.9}>
+              <View
+                style={[
+                  styles.quickIcon,
+                  action.emphasis === 'primary' ? styles.quickIconPrimary : styles.quickIconMuted,
+                ]}
+              >
+                <Ionicons
+                  name={action.icon as React.ComponentProps<typeof Ionicons>['name']}
+                  size={22}
+                  color={action.emphasis === 'primary' ? 'white' : PRIMARY}
                 />
-              ))}
+              </View>
+              <Text style={styles.quickLabel}>{action.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>My Courses</Text>
+          <TouchableOpacity activeOpacity={0.8}>
+            <Text style={styles.link}>See All</Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.courseRow}>
+          {COURSES.map((course) => (
+            <View key={course.title} style={styles.courseCard}>
+              <View style={[styles.courseIcon, { backgroundColor: `${course.tint}22` }]}>
+                <Ionicons
+                  name={course.icon as React.ComponentProps<typeof Ionicons>['name']}
+                  size={18}
+                  color={course.tint}
+                />
+              </View>
+              <Text style={styles.courseTitle}>{course.title}</Text>
+              <View style={styles.progressTrack}>
+                <View style={[styles.progressFill, { width: `${course.progress}%`, backgroundColor: course.tint }]} />
+              </View>
             </View>
-            <Text style={styles.socialProofText}>Join 5,000+ students</Text>
-          </View>
-        </View>
+          ))}
+        </ScrollView>
 
-        <View style={styles.trustSection}>
-          <Text style={styles.trustLabel}>TRUSTED BY STUDENTS FROM</Text>
-          <View style={styles.trustRow}>
-            {['AAU', 'JU', 'HU', 'MU'].map((code) => (
-              <View key={code} style={styles.trustPill}>
-                <Text style={styles.trustPillText}>{code}</Text>
+        <Text style={styles.sectionTitle}>Upcoming Study Group</Text>
+        <View style={styles.studyCard}>
+          <View style={styles.studyHeader}>
+            <View style={styles.studyIcon}>
+              <Ionicons name="people" size={18} color={PRIMARY} />
+            </View>
+            <View style={styles.studyText}>
+              <Text style={styles.studyTitle}>Calculus II Prep</Text>
+              <View style={styles.studyMetaRow}>
+                <Ionicons name="time-outline" size={14} color={TEXT_MUTED} />
+                <Text style={styles.studyMeta}>4:00 PM Today</Text>
               </View>
-            ))}
+            </View>
+          </View>
+          <View style={styles.studyActions}>
+            <TouchableOpacity style={styles.primaryButton} activeOpacity={0.9}>
+              <Ionicons name="videocam" size={16} color="white" />
+              <Text style={styles.primaryButtonText}>Join Call</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.outlineButton} activeOpacity={0.9}>
+              <Text style={styles.outlineButtonText}>Agenda</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Everything you need to succeed</Text>
-            <Text style={styles.sectionSubtitle}>
-              We have built a platform specifically designed for the Ethiopian higher education ecosystem.
-            </Text>
-          </View>
-
-          <View style={styles.featureGrid}>
-            {FEATURES.map((feature) => (
-              <View key={feature.title} style={[styles.featureCard, { width: featureWidth }]}>
-                <View style={styles.featureIconBox}>
-                  <Ionicons name={feature.icon as any} size={20} color={PRIMARY} />
-                </View>
-                <Text style={styles.featureTitle}>{feature.title}</Text>
-                <Text style={styles.featureDescription}>{feature.description}</Text>
+        <Text style={styles.sectionTitle}>Recent Discussions</Text>
+        <View style={styles.discussionList}>
+          {DISCUSSIONS.map((item) => (
+            <View key={item.title} style={styles.discussionCard}>
+              <View style={styles.discussionTop}>
+                <Text style={[styles.discussionCourse, { color: item.accent }]}>{item.course.toUpperCase()}</Text>
+                <Text style={styles.discussionTime}>{item.time}</Text>
               </View>
-            ))}
-          </View>
+              <Text style={styles.discussionTitle}>{item.title}</Text>
+              <View style={styles.discussionMetaRow}>
+                <Ionicons name="chatbubble-ellipses-outline" size={14} color={TEXT_MUTED} />
+                <Text style={styles.discussionMeta}>{item.replies}</Text>
+              </View>
+            </View>
+          ))}
         </View>
 
-        <View style={styles.missionWrapper}>
-          <View style={styles.missionCard}>
-            <Ionicons name="rocket-outline" size={28} color={PRIMARY} />
-            <Text style={styles.missionTitle}>Our Mission</Text>
-            <Text style={styles.missionText}>
-              "To democratize access to academic resources and foster a collaborative environment where every Ethiopian
-              student has the tools to excel."
-            </Text>
+        <Text style={styles.sectionTitle}>Research Overview</Text>
+        <View style={styles.researchCard}>
+          <View style={styles.researchHeader}>
+            <View style={styles.researchIcon}>
+              <Ionicons name="flask" size={18} color="#a855f7" />
+            </View>
+            <View>
+              <Text style={styles.researchTitle}>Renewable Energy in Addis</Text>
+              <Text style={styles.researchStatus}>Status: Data Collection</Text>
+            </View>
           </View>
+          <View style={styles.progressTrackTall}>
+            <View style={[styles.progressFillTall, { width: '45%' }]} />
+          </View>
+          <Text style={styles.progressLabel}>45% Complete</Text>
         </View>
-
-        <View style={styles.footerLinks}>
-          <TouchableOpacity activeOpacity={0.8}>
-            <Text style={styles.footerLinkText}>Privacy Policy</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.8}>
-            <Text style={styles.footerLinkText}>Terms of Service</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.copyright}>© 2023 UniConnect Ethiopia</Text>
+        <View style={styles.bottomSpace} />
       </ScrollView>
 
-      <View style={styles.stickyBar}>
-        <Link href={"/login" as unknown as any} asChild>
-        <TouchableOpacity style={styles.secondaryButton} activeOpacity={0.85}>
-          <Text style={styles.secondaryButtonText}>Log In</Text>
+      {menuOpen && (
+        <View style={styles.menuSheet}>
+          <View style={styles.menuHeader}>
+            <Text style={styles.menuTitle}>Quick Navigation</Text>
+            <TouchableOpacity onPress={() => setMenuOpen(false)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+              <Ionicons name="close" size={18} color={TEXT_MUTED} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.menuRow}>
+            <TouchableOpacity style={styles.menuItem} activeOpacity={0.9} onPress={() => { setMenuOpen(false); router.replace('/(tabs)/explore'); }}>
+              <Ionicons name="compass" size={18} color={PRIMARY} />
+              <Text style={styles.menuLabel}>Explore</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} activeOpacity={0.9}>
+              <Ionicons name="school" size={18} color={PRIMARY} />
+              <Text style={styles.menuLabel}>Academics</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} activeOpacity={0.9}>
+              <Ionicons name="calendar-clear" size={18} color={PRIMARY} />
+              <Text style={styles.menuLabel}>Events</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} activeOpacity={0.9}>
+              <Ionicons name="people" size={18} color={PRIMARY} />
+              <Text style={styles.menuLabel}>Clubs</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} activeOpacity={0.9}>
+              <Ionicons name="briefcase" size={18} color={PRIMARY} />
+              <Text style={styles.menuLabel}>Career</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
+      <View style={styles.bottomNav}>
+        <TouchableOpacity style={styles.bottomItem} activeOpacity={0.9} onPress={() => { setMenuOpen(false); router.replace('/(tabs)'); }}>
+          <Ionicons name="home-outline" size={22} color={PRIMARY} />
+          <Text style={[styles.bottomLabel, { color: PRIMARY }]}>Home</Text>
         </TouchableOpacity>
-        </Link>
-        <TouchableOpacity style={styles.primaryButton} activeOpacity={0.9}>
-          <Text style={styles.primaryButtonText}>Join the Community</Text>
-          <Ionicons name="arrow-forward" size={16} color="white" />
+        <TouchableOpacity style={styles.bottomItem} activeOpacity={0.9}>
+          <View style={styles.iconWithDot}>
+            <Ionicons name="git-network-outline" size={22} color={TEXT_MUTED} />
+            <View style={styles.badgeDot} />
+          </View>
+          <Text style={styles.bottomLabel}>Connect</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuButton} activeOpacity={0.9} onPress={() => setMenuOpen((v) => !v)}>
+          <Ionicons name="menu" size={22} color="white" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.bottomItem} activeOpacity={0.9}>
+          <View style={styles.iconWithDot}>
+            <Ionicons name="chatbubble-ellipses-outline" size={22} color={TEXT_MUTED} />
+            <View style={styles.badgeDot} />
+          </View>
+          <Text style={styles.bottomLabel}>Messages</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.bottomItem} activeOpacity={0.9} onPress={() => { setMenuOpen(false); router.replace('/(tabs)/profile'); }}>
+          <Ionicons name="person" size={22} color={TEXT_MUTED} />
+          <Text style={styles.bottomLabel}>Profile</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -176,285 +259,413 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: BACKGROUND,
   },
-  scrollContent: {
-    paddingBottom: 160,
+  content: {
+    padding: 16,
+    paddingBottom: 40,
+    gap: 16,
   },
-  header: {
+  headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 8,
-  },
-  logoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logoIconBox: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    backgroundColor: PRIMARY,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
-  },
-  logoText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: '700',
-    letterSpacing: -0.2,
-  },
-  iconButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.06)',
-  },
-  section: {
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    gap: 16,
-  },
-  heroImageWrapper: {
-    borderRadius: 16,
-    overflow: 'hidden',
-  },
-  heroImage: {
-    height: 220,
-    width: '100%',
-    justifyContent: 'flex-end',
-  },
-  heroImageRadius: {
-    borderRadius: 16,
-  },
-  heroOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(16,25,34,0.55)',
-  },
-  heroBadge: {
-    position: 'absolute',
-    left: 12,
-    bottom: 12,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 6,
-    backgroundColor: PRIMARY,
-  },
-  heroBadgeText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 11,
-    letterSpacing: 0.2,
-  },
-  heroTextBlock: {
-    gap: 10,
-  },
-  heroTitle: {
-    color: 'white',
-    fontSize: 32,
-    fontWeight: '900',
-    lineHeight: 36,
-    letterSpacing: -0.5,
-  },
-  heroSubtitle: {
-    color: TEXT_MUTED,
-    fontSize: 15,
-    lineHeight: 22,
-  },
-  socialProof: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
   },
   avatarRow: {
     flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
   avatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     borderWidth: 2,
-    borderColor: BACKGROUND,
+    borderColor: PRIMARY,
   },
-  avatarOverlap: {
-    marginLeft: -10,
-  },
-  socialProofText: {
-    color: TEXT_MUTED,
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  trustSection: {
-    alignItems: 'center',
-    paddingVertical: 26,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: 'rgba(255,255,255,0.05)',
-    gap: 16,
-    backgroundColor: 'rgba(255,255,255,0.02)',
-  },
-  trustLabel: {
-    color: '#64748b',
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 1.2,
-  },
-  trustRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 12,
-  },
-  trustPill: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: SURFACE,
-    borderWidth: 1,
-    borderColor: BORDER,
-  },
-  trustPillText: {
+  greetingMuted: {
     color: TEXT_MUTED,
     fontSize: 12,
-    fontWeight: '800',
+    fontWeight: '600',
   },
-  sectionHeader: {
-    gap: 8,
-  },
-  sectionTitle: {
-    color: 'white',
-    fontSize: 24,
-    fontWeight: '800',
-    lineHeight: 30,
-  },
-  sectionSubtitle: {
-    color: TEXT_MUTED,
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  featureGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    gap: 12,
-  },
-  featureCard: {
-    backgroundColor: SURFACE,
-    borderWidth: 1,
-    borderColor: BORDER,
-    borderRadius: 14,
-    padding: 14,
-    gap: 10,
-  },
-  featureIconBox: {
-    width: 42,
-    height: 42,
-    borderRadius: 12,
-    backgroundColor: 'rgba(19,127,236,0.12)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  featureTitle: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '800',
-  },
-  featureDescription: {
-    color: TEXT_MUTED,
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  missionWrapper: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  missionCard: {
-    backgroundColor: SURFACE,
-    borderWidth: 1,
-    borderColor: BORDER,
-    borderRadius: 18,
-    padding: 22,
-    alignItems: 'center',
-    gap: 10,
-    overflow: 'hidden',
-  },
-  missionTitle: {
+  greetingName: {
     color: 'white',
     fontSize: 18,
     fontWeight: '800',
   },
-  missionText: {
-    color: '#cbd5e1',
-    fontSize: 14,
-    lineHeight: 20,
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
-  footerLinks: {
-    flexDirection: 'row',
+  iconButton: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: SURFACE,
+    alignItems: 'center',
     justifyContent: 'center',
-    gap: 18,
-    paddingTop: 18,
+    position: 'relative',
   },
-  footerLinkText: {
-    color: TEXT_MUTED,
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  copyright: {
-    color: '#7c8a9f',
-    fontSize: 12,
-    textAlign: 'center',
-    paddingVertical: 14,
-  },
-  stickyBar: {
+  badge: {
     position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    backgroundColor: BACKGROUND,
-    borderTopWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    top: 8,
+    right: 10,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: BADGE,
+    borderWidth: 2,
+    borderColor: SURFACE,
+  },
+  searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-  },
-  secondaryButton: {
-    flex: 1,
-    height: 50,
-    borderRadius: 12,
+    backgroundColor: SURFACE,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: BORDER,
+    paddingHorizontal: 14,
+    height: 52,
+    gap: 10,
+  },
+  searchInput: {
+    flex: 1,
+    color: 'white',
+    fontSize: 15,
+  },
+  quickRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  quickItem: {
+    alignItems: 'center',
+    gap: 8,
+    flex: 1,
+  },
+  quickIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: SURFACE,
+    borderWidth: 1,
+    borderColor: BORDER,
   },
-  secondaryButtonText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 14,
-  },
-  primaryButton: {
-    flex: 2,
-    height: 50,
-    borderRadius: 12,
+  quickIconPrimary: {
     backgroundColor: PRIMARY,
+    borderColor: PRIMARY,
+    shadowColor: PRIMARY,
+    shadowOpacity: 0.35,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 8 },
+  },
+  quickIconMuted: {
+    backgroundColor: SURFACE,
+  },
+  quickLabel: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 6,
+  },
+  sectionTitle: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  link: {
+    color: PRIMARY,
+    fontWeight: '700',
+  },
+  courseRow: {
+    gap: 12,
+    paddingVertical: 6,
+  },
+  courseCard: {
+    width: 160,
+    backgroundColor: SURFACE,
+    borderRadius: 18,
+    padding: 14,
+    gap: 10,
+    borderWidth: 1,
+    borderColor: BORDER,
+  },
+  courseIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  courseTitle: {
+    color: 'white',
+    fontWeight: '800',
+    fontSize: 14,
+  },
+  progressTrack: {
+    height: 6,
+    borderRadius: 6,
+    backgroundColor: '#1f2933',
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 6,
+  },
+  studyCard: {
+    backgroundColor: SURFACE,
+    borderRadius: 20,
+    padding: 16,
+    gap: 14,
+    borderWidth: 1,
+    borderColor: BORDER,
+  },
+  studyHeader: {
     flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center',
+  },
+  studyIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: '#137fec22',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  studyText: {
+    flex: 1,
+  },
+  studyTitle: {
+    color: 'white',
+    fontWeight: '800',
+    fontSize: 16,
+  },
+  studyMetaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 6,
+    marginTop: 4,
+  },
+  studyMeta: {
+    color: TEXT_MUTED,
+    fontSize: 12,
+  },
+  studyActions: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  primaryButton: {
+    flex: 1,
+    height: 48,
+    backgroundColor: PRIMARY,
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
   },
   primaryButtonText: {
     color: 'white',
     fontWeight: '800',
+  },
+  outlineButton: {
+    height: 48,
+    paddingHorizontal: 18,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: BORDER,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: SURFACE,
+  },
+  outlineButtonText: {
+    color: 'white',
+    fontWeight: '700',
+  },
+  discussionList: {
+    gap: 12,
+  },
+  discussionCard: {
+    backgroundColor: SURFACE,
+    borderRadius: 16,
+    padding: 14,
+    gap: 8,
+    borderWidth: 1,
+    borderColor: BORDER,
+  },
+  discussionTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  discussionCourse: {
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  discussionTime: {
+    color: TEXT_MUTED,
+    fontSize: 12,
+  },
+  discussionTitle: {
+    color: 'white',
+    fontSize: 15,
+    fontWeight: '800',
+  },
+  discussionMetaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  discussionMeta: {
+    color: TEXT_MUTED,
+    fontSize: 13,
+  },
+  researchCard: {
+    backgroundColor: SURFACE,
+    borderRadius: 16,
+    padding: 14,
+    gap: 10,
+    borderWidth: 1,
+    borderColor: BORDER,
+  },
+  researchHeader: {
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
+  },
+  researchIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: '#a855f722',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  researchTitle: {
+    color: 'white',
+    fontWeight: '800',
+    fontSize: 15,
+  },
+  researchStatus: {
+    color: TEXT_MUTED,
+    fontSize: 12,
+  },
+  progressTrackTall: {
+    height: 8,
+    borderRadius: 6,
+    backgroundColor: '#1f2933',
+    overflow: 'hidden',
+  },
+  progressFillTall: {
+    height: '100%',
+    borderRadius: 6,
+    backgroundColor: '#7c3aed',
+  },
+  progressLabel: {
+    color: PRIMARY,
+    fontWeight: '700',
+    textAlign: 'right',
+    fontSize: 12,
+  },
+  bottomSpace: {
+    height: 110,
+  },
+  bottomNav: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 88,
+    backgroundColor: SURFACE,
+    borderTopWidth: 1,
+    borderColor: BORDER,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingHorizontal: 12,
+    paddingBottom: 8,
+  },
+  bottomItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+  },
+  bottomLabel: {
+    color: TEXT_MUTED,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  iconWithDot: {
+    position: 'relative',
+  },
+  badgeDot: {
+    position: 'absolute',
+    top: -4,
+    right: -8,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: PRIMARY,
+    borderWidth: 2,
+    borderColor: SURFACE,
+  },
+  menuButton: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: PRIMARY,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: PRIMARY,
+    shadowOpacity: 0.35,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 6 },
+    marginBottom: 18,
+  },
+  menuSheet: {
+    position: 'absolute',
+    left: 16,
+    right: 16,
+    bottom: 96,
+    backgroundColor: SURFACE,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: BORDER,
+    padding: 12,
+    gap: 10,
+  },
+  menuHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  menuTitle: {
+    color: 'white',
     fontSize: 14,
-    letterSpacing: 0.2,
+    fontWeight: '800',
+  },
+  menuRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  menuItem: {
+    width: '48%',
+    paddingVertical: 10,
+    borderRadius: 12,
+    backgroundColor: SURFACE,
+    borderWidth: 1,
+    borderColor: BORDER,
+    alignItems: 'center',
+    gap: 6,
+  },
+  menuLabel: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '700',
   },
 });
