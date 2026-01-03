@@ -9,6 +9,7 @@ const SURFACE = '#1c242e';
 const SURFACE_ALT = '#161b26';
 const BORDER = '#2a3441';
 const TEXT_MUTED = '#94a3b8';
+const BOTTOM_NAV_HEIGHT = 88;
 
 const FILTERS = ['All Chats', 'Groups', 'Unread'] as const;
 
@@ -137,7 +138,7 @@ export default function MessagesScreen() {
               onPress={() => {
                 setMenuOpen(false);
                 setConnectOpen(false);
-                router.push(`/(tabs)/messages/${chat.id}`);
+                router.push({ pathname: '/(tabs)/messages/[id]', params: { id: chat.id } });
               }}
             >
               <View style={styles.chatAvatarWrap}>
@@ -295,7 +296,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
-    paddingBottom: 140,
+    paddingBottom: 160,
     gap: 14,
   },
   headerRow: {
@@ -506,14 +507,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: BOTTOM_NAV_HEIGHT,
+    zIndex: 3,
     backgroundColor: SURFACE,
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
     borderWidth: 1,
     borderColor: BORDER,
     padding: 16,
-    paddingBottom: 18,
+    paddingBottom: 26,
     gap: 14,
   },
   menuHeader: {
@@ -562,6 +564,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingHorizontal: 12,
     paddingBottom: 8,
+    zIndex: 2,
   },
   bottomItem: {
     alignItems: 'center',

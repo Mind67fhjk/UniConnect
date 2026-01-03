@@ -202,47 +202,6 @@ export default function MessageThreadScreen() {
           </View>
         </View>
       )}
-
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.bottomItem} activeOpacity={0.9} onPress={() => { setMenuOpen(false); setConnectOpen(false); router.replace('/(tabs)'); }}>
-          <Ionicons name="home-outline" size={22} color={TEXT_MUTED} />
-          <Text style={styles.bottomLabel}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.bottomItem}
-          activeOpacity={0.9}
-          onPress={() => {
-            setMenuOpen(false);
-            setConnectOpen((v) => !v);
-          }}
-        >
-          <Ionicons name="git-network-outline" size={22} color={TEXT_MUTED} />
-          <Text style={styles.bottomLabel}>Connect</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.menuButton}
-          activeOpacity={0.9}
-          onPress={() => {
-            setConnectOpen(false);
-            setMenuOpen((v) => !v);
-          }}
-        >
-          <Ionicons name="menu" size={22} color="white" />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.bottomItem} activeOpacity={0.9}>
-          <View style={styles.iconWithDot}>
-            <Ionicons name="chatbubble-ellipses" size={22} color={PRIMARY} />
-            <View style={styles.badgeDot} />
-          </View>
-          <Text style={[styles.bottomLabel, { color: PRIMARY }]}>Messages</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.bottomItem} activeOpacity={0.9} onPress={() => { setMenuOpen(false); setConnectOpen(false); router.replace('/(tabs)/profile'); }}>
-          <Ionicons name="person-outline" size={22} color={TEXT_MUTED} />
-          <Text style={styles.bottomLabel}>Profile</Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 }
@@ -254,7 +213,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
-    paddingBottom: 180,
+    paddingBottom: 36,
     gap: 14,
   },
   headerRow: {
@@ -424,7 +383,7 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingHorizontal: 16,
     paddingBottom: 16,
-    marginBottom: 96,
+    marginBottom: 12,
   },
   inputWrap: {
     flexDirection: 'row',
@@ -517,57 +476,5 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     fontSize: 13,
     textAlign: 'center',
-  },
-  bottomNav: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 88,
-    backgroundColor: SURFACE,
-    borderTopWidth: 1,
-    borderColor: BORDER,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingHorizontal: 12,
-    paddingBottom: 8,
-  },
-  bottomItem: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 4,
-  },
-  bottomLabel: {
-    color: TEXT_MUTED,
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  menuButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: PRIMARY,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: PRIMARY,
-    shadowOpacity: 0.35,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 6 },
-    marginBottom: 18,
-  },
-  iconWithDot: {
-    position: 'relative',
-  },
-  badgeDot: {
-    position: 'absolute',
-    top: -6,
-    right: -10,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#e11d48',
-    borderWidth: 2,
-    borderColor: SURFACE,
   },
 });
