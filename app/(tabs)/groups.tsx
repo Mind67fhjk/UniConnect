@@ -276,7 +276,15 @@ export default function GroupsScreen() {
           <Ionicons name="menu" size={22} color="white" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.bottomItem} activeOpacity={0.9}>
+        <TouchableOpacity
+          style={styles.bottomItem}
+          activeOpacity={0.9}
+          onPress={() => {
+            setMenuOpen(false);
+            setConnectOpen(false);
+            router.replace('/(tabs)/messages');
+          }}
+        >
           <Ionicons name="chatbubble-ellipses-outline" size={22} color={TEXT_MUTED} />
           <Text style={styles.bottomLabel}>Messages</Text>
         </TouchableOpacity>

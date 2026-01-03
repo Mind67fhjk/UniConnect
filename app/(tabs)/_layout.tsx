@@ -31,6 +31,18 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="forum"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="groups"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="messages"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
