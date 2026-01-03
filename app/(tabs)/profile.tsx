@@ -92,7 +92,11 @@ export default function ProfileScreen() {
             </View>
           </View>
           <View style={styles.heroActions}>
-            <TouchableOpacity style={styles.primaryButton} activeOpacity={0.9}>
+            <TouchableOpacity
+              style={styles.primaryButton}
+              activeOpacity={0.9}
+              onPress={() => router.push('/(tabs)/edit-profile')}
+            >
               <Text style={styles.primaryButtonText}>Edit Profile</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.circleButton} activeOpacity={0.85}>
