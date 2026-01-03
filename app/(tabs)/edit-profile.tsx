@@ -281,7 +281,14 @@ export default function EditProfileScreen() {
               <Ionicons name="chatbubbles" size={18} color={PRIMARY} />
               <Text style={styles.menuLabel}>Forum</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} activeOpacity={0.9}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              activeOpacity={0.9}
+              onPress={() => {
+                setConnectOpen(false);
+                router.replace('/(tabs)/groups');
+              }}
+            >
               <Ionicons name="people" size={18} color={PRIMARY} />
               <Text style={styles.menuLabel}>Groups</Text>
             </TouchableOpacity>

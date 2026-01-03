@@ -2,13 +2,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  ImageBackground,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    ImageBackground,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 
 const PRIMARY = '#137fec';
@@ -277,7 +277,14 @@ export default function ProfileScreen() {
               <Ionicons name="chatbubbles" size={18} color={PRIMARY} />
               <Text style={styles.menuLabel}>Forum</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} activeOpacity={0.9}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              activeOpacity={0.9}
+              onPress={() => {
+                setConnectOpen(false);
+                router.replace('/(tabs)/groups');
+              }}
+            >
               <Ionicons name="people" size={18} color={PRIMARY} />
               <Text style={styles.menuLabel}>Groups</Text>
             </TouchableOpacity>
