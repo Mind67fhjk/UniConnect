@@ -2,13 +2,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    ImageBackground,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 const PRIMARY = '#137fec';
@@ -61,7 +61,11 @@ export default function ProfileScreen() {
             <Ionicons name="chevron-back" size={22} color="white" />
             <Text style={styles.headerTitle}>My Profile</Text>
           </View>
-          <TouchableOpacity style={styles.headerIcon} activeOpacity={0.85}>
+          <TouchableOpacity
+            style={styles.headerIcon}
+            activeOpacity={0.85}
+            onPress={() => router.push('/(tabs)/settings')}
+          >
             <Ionicons name="settings-outline" size={20} color="white" />
           </TouchableOpacity>
         </View>
