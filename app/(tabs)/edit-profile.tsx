@@ -28,6 +28,7 @@ export default function EditProfileScreen() {
   const [isPublic, setIsPublic] = useState(true);
   const [showGpa, setShowGpa] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [connectOpen, setConnectOpen] = useState(false);
 
   const tabs = useMemo(
     () => [
@@ -260,13 +261,47 @@ export default function EditProfileScreen() {
           </View>
         </View>
       )}
+      {connectOpen && (
+        <View style={styles.menuSheet}>
+          <View style={styles.menuHeader}>
+            <Text style={styles.menuTitle}>Connect</Text>
+            <TouchableOpacity onPress={() => setConnectOpen(false)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+              <Ionicons name="close" size={18} color={TEXT_MUTED} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.menuRow}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              activeOpacity={0.9}
+              onPress={() => {
+                setConnectOpen(false);
+                router.replace('/(tabs)/forum');
+              }}
+            >
+              <Ionicons name="chatbubbles" size={18} color={PRIMARY} />
+              <Text style={styles.menuLabel}>Forum</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} activeOpacity={0.9}>
+              <Ionicons name="people" size={18} color={PRIMARY} />
+              <Text style={styles.menuLabel}>Groups</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
 
       <View style={styles.bottomNav}>
         <TouchableOpacity style={styles.bottomItem} activeOpacity={0.9} onPress={() => { setMenuOpen(false); router.replace('/(tabs)'); }}>
           <Ionicons name="home-outline" size={22} color={TEXT_MUTED} />
           <Text style={styles.bottomLabel}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.bottomItem} activeOpacity={0.9}>
+        <TouchableOpacity
+          style={styles.bottomItem}
+          activeOpacity={0.9}
+          onPress={() => {
+            setMenuOpen(false);
+            setConnectOpen((v) => !v);
+          }}
+        >
           <View style={styles.iconWithDot}>
             <Ionicons name="git-network-outline" size={22} color={TEXT_MUTED} />
             <View style={styles.badgeDot} />
@@ -274,7 +309,14 @@ export default function EditProfileScreen() {
           <Text style={styles.bottomLabel}>Connect</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuButton} activeOpacity={0.9} onPress={() => setMenuOpen((v) => !v)}>
+        <TouchableOpacity
+          style={styles.menuButton}
+          activeOpacity={0.9}
+          onPress={() => {
+            setConnectOpen(false);
+            setMenuOpen((v) => !v);
+          }}
+        >
           <Ionicons name="menu" size={22} color="white" />
         </TouchableOpacity>
 
