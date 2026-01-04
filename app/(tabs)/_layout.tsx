@@ -43,6 +43,14 @@ export default function TabLayout() {
         options={{ href: null }}
       />
       <Tabs.Screen
+        name="events"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name="courses"
+        options={{ href: null }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',

@@ -2,13 +2,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    ImageBackground,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 const PRIMARY = '#137fec';
@@ -287,6 +287,17 @@ export default function ProfileScreen() {
             >
               <Ionicons name="people" size={18} color={PRIMARY} />
               <Text style={styles.menuLabel}>Groups</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              activeOpacity={0.9}
+              onPress={() => {
+                setConnectOpen(false);
+                router.replace('/(tabs)/courses');
+              }}
+            >
+              <Ionicons name="book" size={18} color={PRIMARY} />
+              <Text style={styles.menuLabel}>Courses</Text>
             </TouchableOpacity>
           </View>
         </View>

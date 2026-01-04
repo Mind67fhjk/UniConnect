@@ -158,7 +158,7 @@ export default function ExploreScreen() {
               <Ionicons name="school" size={18} color={PRIMARY} />
               <Text style={styles.menuLabel}>Academics</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} activeOpacity={0.9}>
+            <TouchableOpacity style={styles.menuItem} activeOpacity={0.9} onPress={() => { setMenuOpen(false); router.replace('/(tabs)/events'); }}>
               <Ionicons name="calendar-clear" size={18} color={PRIMARY} />
               <Text style={styles.menuLabel}>Events</Text>
             </TouchableOpacity>
@@ -203,6 +203,17 @@ export default function ExploreScreen() {
             >
               <Ionicons name="people" size={18} color={PRIMARY} />
               <Text style={styles.menuLabel}>Groups</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              activeOpacity={0.9}
+              onPress={() => {
+                setConnectOpen(false);
+                router.replace('/(tabs)/courses');
+              }}
+            >
+              <Ionicons name="book" size={18} color={PRIMARY} />
+              <Text style={styles.menuLabel}>Courses</Text>
             </TouchableOpacity>
           </View>
         </View>
